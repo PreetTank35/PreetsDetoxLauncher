@@ -2,13 +2,14 @@ package com.preet.detoxlauncher.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.preet.detoxlauncher.data.local.entity.FocusSessionEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FocusSessionDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSession(session: FocusSessionEntity): Long
 
     @Query("SELECT * FROM focus_sessions ORDER BY startTime DESC")
