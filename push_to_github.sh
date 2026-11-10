@@ -6,7 +6,7 @@ cd /data/data/com.termux/files/home/PreetsDetoxLauncher
 TOKEN="$1"
 
 echo "=========================================================="
-echo "  Deploying Preet's Detox Launcher to GitHub"
+echo "  Deploying CI Fix to Preet's Detox Launcher"
 echo "  Repository: https://github.com/PreetTank35/PreetsDetoxLauncher"
 echo "=========================================================="
 
@@ -16,36 +16,24 @@ if [ -z "$(git config user.email)" ]; then
     git config user.name "Preet Tank"
 fi
 
-# Ensure main branch is active
 git branch -M main 2>/dev/null || true
 
-# Check if commit exists
-if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
-    echo "[*] Staging and creating initial commit..."
-    git add -A
-    git commit -m "feat: complete native android implementation for Preet's Detox Launcher"
-else
-    git add -A
-    git commit -m "feat: update Preet's Detox Launcher" 2>/dev/null || echo "[*] Working tree clean, commit ready."
-fi
+# Stage all files
+git add -A
+git commit -m "ci: add setup-gradle to auto-generate wrapper and build APK" || echo "Changes already committed."
 
 # Push
 if [ -n "$TOKEN" ]; then
-    echo "[*] Pushing to GitHub using provided token..."
+    echo "[*] Pushing with provided token..."
     git push "https://PreetTank35:${TOKEN}@github.com/PreetTank35/PreetsDetoxLauncher.git" main --force
 else
-    echo "[*] Setting remote origin..."
-    git remote remove origin 2>/dev/null || true
-    git remote add origin https://github.com/PreetTank35/PreetsDetoxLauncher.git
     echo "[*] Pushing to GitHub main branch..."
-    echo "Tip: Termux hides passwords completely while typing for security."
     git push -u origin main --force
 fi
 
 echo ""
 echo "=========================================================="
-echo "  SUCCESSFULLY PUSHED TO GITHUB!"
-echo "  GitHub Actions CI/CD has now been triggered."
-echo "  Watch the build and download your APK at:"
+echo "  SUCCESSFULLY PUSHED FIX TO GITHUB!"
+echo "  Watch the new build at:"
 echo "  https://github.com/PreetTank35/PreetsDetoxLauncher/actions"
 echo "=========================================================="
