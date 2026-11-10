@@ -17,7 +17,7 @@ import com.preet.detoxlauncher.data.local.entity.AppItemEntity
 import com.preet.detoxlauncher.data.model.AppInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
@@ -101,7 +101,7 @@ class AppRepository(
      * Returns flow of all visible applications, merged with dynamic icons.
      */
     fun getVisibleApps(activeIconPack: String?): Flow<List<AppInfo>> {
-        return appDao.getVisibleApps().combine(appDao.getAllApps()) { visibleEntities, _ ->
+        return appDao.getVisibleApps().map { visibleEntities ->
             visibleEntities.map { entity ->
                 mapEntityToAppInfo(entity, activeIconPack)
             }
@@ -112,19 +112,17 @@ class AppRepository(
      * Returns favorite applications.
      */
     fun getFavoriteApps(activeIconPack: String?): Flow<List<AppInfo>> {
-        return appDao.getFavoriteApps().mapList(activeIconPack)
+        return appDao.getFavoriteApps().map { list ->
+            list.map { entity -> mapEntityToAppInfo(entity, activeIconPack) }
+        }
     }
 
     /**
      * Returns all applications, including hidden ones (for management screens).
      */
     fun getAllApps(activeIconPack: String?): Flow<List<AppInfo>> {
-        return appDao.getAllApps().mapList(activeIconPack)
-    }
-
-    private fun Flow<List<AppItemEntity>>.mapList(activeIconPack: String?): Flow<List<AppInfo>> {
-        return combine(this) { entities ->
-            entities[0].map { entity -> mapEntityToAppInfo(entity, activeIconPack) }
+        return appDao.getAllApps().map { list ->
+            list.map { entity -> mapEntityToAppInfo(entity, activeIconPack) }
         }
     }
 

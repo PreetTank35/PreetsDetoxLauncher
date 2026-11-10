@@ -27,19 +27,18 @@ jobs:
       with:
         gradle-version: '8.4'
 
-    - name: Generate Gradle Wrapper
-      run: gradle wrapper
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Generate Official Gradle Wrapper
+      run: |
+        gradle wrapper --gradle-version 8.4
+        chmod +x gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace
+      run: ./gradlew assembleDebug --stacktrace --no-daemon
 
     - name: Build Release APK
-      run: ./gradlew assembleRelease --stacktrace || echo "Release build completed or optional"
+      run: ./gradlew assembleRelease --stacktrace --no-daemon || echo "Release build optional or unsigned"
 
-    - name: Upload All APKs
+    - name: Upload APK Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: PreetsDetoxLauncher-APKs
