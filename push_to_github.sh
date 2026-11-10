@@ -3,41 +3,44 @@ set -e
 
 cd /data/data/com.termux/files/home/PreetsDetoxLauncher
 
+TOKEN="$1"
+
 echo "=========================================================="
 echo "  Deploying Preet's Detox Launcher to GitHub"
 echo "  Repository: https://github.com/PreetTank35/PreetsDetoxLauncher"
 echo "=========================================================="
 
-# 1. Configure Git Identity if not set
+# Configure Git Identity
 if [ -z "$(git config user.email)" ]; then
-    echo "[*] Setting local Git author identity..."
     git config user.email "preettank35@users.noreply.github.com"
     git config user.name "Preet Tank"
 fi
 
-# 2. Initialize git if not already present
-if [ ! -d ".git" ]; then
-    echo "[1/4] Initializing Git repository with 'main' branch..."
-    git init -b main
+# Ensure main branch is active
+git branch -M main 2>/dev/null || true
+
+# Check if commit exists
+if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+    echo "[*] Staging and creating initial commit..."
+    git add -A
+    git commit -m "feat: complete native android implementation for Preet's Detox Launcher"
 else
-    echo "[1/4] Ensuring 'main' branch is active..."
-    git branch -M main 2>/dev/null || true
+    git add -A
+    git commit -m "feat: update Preet's Detox Launcher" 2>/dev/null || echo "[*] Working tree clean, commit ready."
 fi
 
-# 3. Configure Remote URL
-echo "[2/4] Setting remote origin..."
-git remote remove origin 2>/dev/null || true
-git remote add origin https://github.com/PreetTank35/PreetsDetoxLauncher.git
-
-# 4. Stage & Commit
-echo "[3/4] Staging all project files..."
-git add -A
-git commit -m "feat: complete native android implementation for Preet's Detox Launcher" || echo "Commit already created."
-
-# 5. Push to Remote
-echo "[4/4] Pushing to GitHub main branch..."
-echo "Note: When prompted for password, enter your GitHub Personal Access Token (PAT)."
-git push -u origin main --force
+# Push
+if [ -n "$TOKEN" ]; then
+    echo "[*] Pushing to GitHub using provided token..."
+    git push "https://PreetTank35:${TOKEN}@github.com/PreetTank35/PreetsDetoxLauncher.git" main --force
+else
+    echo "[*] Setting remote origin..."
+    git remote remove origin 2>/dev/null || true
+    git remote add origin https://github.com/PreetTank35/PreetsDetoxLauncher.git
+    echo "[*] Pushing to GitHub main branch..."
+    echo "Tip: Termux hides passwords completely while typing for security."
+    git push -u origin main --force
+fi
 
 echo ""
 echo "=========================================================="
