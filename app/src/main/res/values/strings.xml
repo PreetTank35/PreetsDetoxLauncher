@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Preet\'s Detox Launcher</string>
+    <string name="tagline">Less scrolling. More living.</string>
+    <string name="accessibility_service_description">Monitors foreground application launches on-device to enforce user-configured digital wellbeing limits. Zero private data or keystrokes are recorded or transmitted.</string>
+    
+    <!-- Intentional Opening -->
+    <string name="intentional_title">Why are you opening this app?</string>
+    <string name="intentional_subtitle">Take a brief breath. Choose your intention before proceeding.</string>
+    <string name="reason_study">Study</string>
+    <string name="reason_work">Work</string>
+    <string name="reason_communication">Communication</string>
+    <string name="reason_entertainment">Entertainment</string>
+    <string name="reason_browsing">Just browsing</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_cancel">Cancel</string>
+    
+    <!-- Detox Blocking -->
+    <string name="blocked_title">Mindful Pause</string>
+    <string name="blocked_description">You\'ve reached your daily intentional limit for this application.</string>
+    <string name="take_a_break">Take a deep breath. Look away from your screen for a moment.</string>
+    <string name="emergency_override">Emergency Override (10m)</string>
+    <string name="emergency_remaining">Remaining emergency uses today: %1$d</string>
+</resources>
