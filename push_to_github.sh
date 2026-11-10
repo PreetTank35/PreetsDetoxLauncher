@@ -20,7 +20,7 @@ git branch -M main 2>/dev/null || true
 
 # Stage all files
 git add -A
-git commit -m "fix: resolve flow map and wrapper configuration to ensure clean build" || echo "Changes already committed."
+git commit -m "fix: resolve experimental foundation api in app drawer and compiler args" || echo "Changes already committed."
 
 # Push
 if [ -n "$TOKEN" ]; then
